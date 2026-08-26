@@ -9,10 +9,20 @@ An enterprise-scale data platform engineered to ingest, clean, and model multi-s
 The platform is designed around the **Medallion (Bronze/Silver/Gold) Architecture**, enforcing a strict separation of concerns between raw file storage, data transformation logic, and downstream business intelligence (BI) consumption.
 
 ```text
-  [ MULTI-SOURCE CHAOS ]             [ IN-PROCESS DATA WAREHOUSE ]
-  📦 Transactions (Parquet)  ───►  🥈 STAGING (Views)
-  📄 Customer Ops (CSV)      ───►  🥈 INTERMEDIATE (Views/Ephemerals)
-  🌐 Clickstream (JSON)      ───►  🥇 MARTS (Physical Tables) ───► 📊 BI Tools
+   [ MULTI-SOURCE CHAOS ]      [ BRONZE ] ───► [ SILVER ] ───► [ GOLD LAYER ]
+  
+  📦 Transactions (Parquet)  ───────┐
+  📄 Customer Ops (CSV)      ───────┼───►  🥈 STAGING (Views)
+  🌐 Clickstream (JSON)      ───────┘           │
+                                                ▼
+                                           🥈 INTERMEDIATE (Views)
+                                                │
+                                                ▼
+                                           🥇 MARTS (Physical Tables)
+                                                │
+                                                ▼
+                                           📊 BI Dashboards & Users
+
 ```
 
 ### Engineered Data Chaos (Multi-Format Ingestion)
