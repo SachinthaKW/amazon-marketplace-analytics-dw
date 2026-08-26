@@ -6,7 +6,8 @@ An enterprise-scale data platform engineered to ingest, clean, and model multi-s
 
 ## 🏗️ Architecture Overview
 
-The platform is designed around the **Medallion (Bronze/Silver/Gold) Architecture**, enforcing a strict separation of concerns between raw file storage, data transformation logic, and downstream business intelligence (BI) consumption.
+The platform is designed around the **Medallion (Bronze/Silver/Gold) Architecture**, enforcing a strict separation of concerns between raw file storage, data transformation logic, and downstream business intelligence (BI) consumption. Upstream processing isolates data cleanliness stages (Silver Layer), while the final presentation layer (Gold Layer) is strictly modeled using **Kimball Dimensional Modeling** split into dedicated **Data Marts**. This project implements a hybrid **Medallion-Kimball Architecture**. 
+
 
 ```text
    [ MULTI-SOURCE CHAOS ]      [ BRONZE ] ───► [ SILVER ] ───► [ GOLD LAYER ]
@@ -24,6 +25,18 @@ The platform is designed around the **Medallion (Bronze/Silver/Gold) Architectur
                                            📊 BI Dashboards & Users
 
 ```
+
+### 1. The Dimensional Model (Star Schema)
+To optimize query performance in DuckDB and ensure intuitive reporting for BI tools (like Power BI or Tableau), the final tables are decoupled into a Star Schema design pattern:
+
+*   **`fct_orders` (Fact Table):** The central table tracking measurable, numeric business events. Every row represents an individual order event. It contains foreign keys linking to dimensions, alongside quantitative metrics like `total_amount` and `item_price`.
+*   **`dim_customers` (Dimension Table):** A descriptive lookup table containing slowly changing or static context about the consumers, such as `customer_name`, `email`, `age`, and `country`.
+*   **`dim_marketing_attributes` (Dimension Table):** Extracted from the raw JSON payloads, this table holds web operational details like `traffic_source`, `device_type`, and `browser` to allow analysts to slice financial performance by acquisition channel.
+
+### 2. The Data Mart Layout
+The presentation tier is partitioned into business boundaries within the `models/marts/` directory:
+*   `marts/core/`: Contains fundamental organizational assets required across all business units (`fct_orders`, `dim_customers`).
+*   `marts/marketing/`: Houses customer session paths and attribution models derived from unpacked clickstream files, empowering marketing teams to calculate Customer Acquisition Cost (CAC) and conversion ratios.
 
 ### Engineered Data Chaos (Multi-Format Ingestion)
 To simulate production-grade data ecosystem challenges, a single wide upstream transaction matrix of **1,000,000+ rows** was programmatically deconstructed into three distinct, decoupled source environments using Python:
