@@ -1,0 +1,19 @@
+
+target/
+dbt_packages/
+logs/
+.env
+dbt_internal_packages/
+
+
+# --- Custom DuckDB & System Overrides ---
+# Ignore the local Python virtual environment
+.venv/
+__pycache__/
+
+# Ignore the heavy raw data folder
+data/
+
+# Ignore local DuckDB database files and their temporary lock files
+*.duckdb
+*.duckdb.wal
