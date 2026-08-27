@@ -144,43 +144,26 @@ graph TD
 
 
 
-&#x20;   %% Data Pipeline Relationships
+    %% Data Pipeline Relationships
+    A --> stg_O
+    B --> stg_C
+    C --> stg_M
 
-&#x20;   A ──► stg\_O
+    stg_O --> int_O
+    stg_C --> int_O
+    stg_M --> int_O
 
-&#x20;   B ──► stg\_C
+    int_O --> F1
+    int_O --> F2
+    int_O --> F3
+    
+    stg_C --> D3
+    stg_M --> D2
 
-&#x20;   C ──► stg\_M
+    F1 --> Dash
+    F2 --> Dash
+    F3 --> Dash
 
-
-
-&#x20;   stg\_O ──► int\_O
-
-&#x20;   stg\_C ──► int\_O
-
-&#x20;   stg\_M ──► int\_O
-
-
-
-&#x20;   int\_O ──► F1
-
-&#x20;   int\_O ──► F2
-
-&#x20;   int\_O ──► F3
-
-&#x20;   
-
-&#x20;   stg\_C ──► D3
-
-&#x20;   stg\_M ──► D2
-
-
-
-&#x20;   F1 ──► Dash
-
-&#x20;   F2 ──► Dash
-
-&#x20;   F3 ──► Dash
 
 ```
 
