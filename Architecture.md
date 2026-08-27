@@ -1,4 +1,4 @@
-\# Data Platform Architecture \& Blueprint 🏗️
+# Data Platform Architecture \& Blueprint 🏗️
 
 
 
@@ -6,11 +6,11 @@ This document details the system design, data flow topology, and data modeling b
 
 
 
-\---
+---
 
 
 
-\## 1. The Kimball Enterprise Bus Matrix
+## 1. The Kimball Enterprise Bus Matrix
 
 
 
@@ -34,11 +34,11 @@ The Bus Matrix defines the shared blueprint across our enterprise data assets. I
 
 
 
-\---
+---
 
 
 
-\## 2. Data Flow Diagram (DFD)
+## 2. Data Flow Diagram (DFD)
 
 
 
@@ -139,15 +139,15 @@ graph TD
 
 
 
-\---
+---
 
 
 
-\## 3. Layer Processing Definitions
+## 3. Layer Processing Definitions
 
 
 
-\### 🥈 Silver Staging Layer (Atomic Views)
+### 🥈 Silver Staging Layer (Atomic Views)
 
 \*   \*\*Materialization:\*\* `view`
 
@@ -157,7 +157,7 @@ graph TD
 
 
 
-\### 🥈 Silver Intermediate Layer (Consolidated Logic)
+### 🥈 Silver Intermediate Layer (Consolidated Logic)
 
 \*   \*\*Materialization:\*\* `view`
 
@@ -167,7 +167,7 @@ graph TD
 
 
 
-\### 🥇 Gold Presentation Layer (Target Data Marts)
+### 🥇 Gold Presentation Layer (Target Data Marts)
 
 \*   \*\*Materialization:\*\* `table`
 
