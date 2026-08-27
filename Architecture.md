@@ -19,14 +19,10 @@ The Bus Matrix defines the shared blueprint across our enterprise data assets. I
 
 
 | Business Process (Fact Tables) | Dim Customers 👥 | Dim Products 📦 | Dim Web Attributes 🌐 | Dim Date 📅 |
-
 | :--- | :---: | :---: | :---: | :---: |
-
-| \*\*Order Financials\*\* \*(Finance Mart)\* | \*\*X\*\* | \*\*X\*\* | | \*\*X\*\* |
-
-| \*\*Web Sessions\*\* \*(Marketing Mart)\* | \*\*X\*\* | | \*\*X\*\* | \*\*X\*\* |
-
-| \*\*Customer Retention\*\* \*(CRM Mart)\* | \*\*X\*\* | | | \*\*X\*\* |
+| **Order Financials** *(Finance Mart)* | **X** | **X** | | **X** |
+| **Web Sessions** *(Marketing Mart)* | **X** | | **X** | **X** |
+| **Customer Retention** *(CRM Mart)* | **X** | | | **X** |
 
 
 
