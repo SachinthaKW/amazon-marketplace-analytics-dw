@@ -49,123 +49,93 @@ The platform follows a strict, non-skipping \*\*Medallion Architecture (Bronze â
 ```mermaid
 
 graph TD
+    %% Define Styles
+    classDef bronze fill:#f9cb9c,stroke:#e69138,stroke-width:2px,color:#000;
+    classDef silver fill:#cfe2f3,stroke:#3d85c6,stroke-width:2px,color:#000;
+    classDef gold fill:#ffe599,stroke:#f1c232,stroke-width:2px,color:#000;
+    classDef bi fill:#d9ead3,stroke:#6aa84f,stroke-width:2px,color:#000;
 
-&#x20;   %% Define Styles
+    %% Bronze Layer
+    subgraph BRONZE [Bronze Layer: Raw Source Files]
+        A[raw_orders.parquet]:::bronze
+        B[raw_customers.csv]:::bronze
+        C[raw_marketing.json]:::bronze
+    end
 
-&#x20;   classDef bronze fill:#f9cb9c,stroke:#e69138,stroke-width:2px,color:#000;
+    %% Silver Layer - Staging
+    subgraph SILVER_STG [Silver Layer: Staging Views]
+        stg_O[stg_orders]:::silver
+        stg_C[stg_customers]:::silver
+        stg_M[stg_marketing]:::silver
+    end
 
-&#x20;   classDef silver fill:#cfe2f3,stroke:#3d85c6,stroke-width:2px,color:#000;
+    %% Silver Layer - Intermediate
+    subgraph SILVER_INT [Silver Layer: Intermediate Processing]
+        int_F[int_finance_transform]:::silver
+        int_M[int_marketing_transform]:::silver
+        int_R[int_crm_retention_transform]:::silver
+    end
 
-&#x20;   classDef gold fill:#ffe599,stroke:#f1c232,stroke-width:2px,color:#000;
+    %% Gold Layer - Data Marts
+    subgraph GOLD [Gold Layer: Kimball Star Schema Data Marts]
+        
+        subgraph FINANCE_MART [Finance Mart]
+            F1[fct_order_financials]:::gold
+            D1[dim_products]:::gold
+        end
+        
+        subgraph MARKETING_MART [Marketing Mart]
+            F2[fct_web_sessions]:::gold
+            D2[dim_web_attributes]:::gold
+        end
+        
+        subgraph CRM_MART [CRM Mart]
+            F3[fct_customer_retention]:::gold
+            D3[dim_customers]:::gold
+        end
+    end
 
-&#x20;   classDef bi fill:#d9ead3,stroke:#6aa84f,stroke-width:2px,color:#000;
+    %% Consumer Layer
+    Dash[Power BI / Tableau Dashboards]:::bi
 
-
-
-&#x20;   %% Bronze Layer
-
-&#x20;   subgraph BRONZE \[Bronze Layer: Raw Source Files]
-
-&#x20;       A\[raw\_orders.parquet]:::bronze
-
-&#x20;       B\[raw\_customers.csv]:::bronze
-
-&#x20;       C\[raw\_marketing.json]:::bronze
-
-&#x20;   end
-
-
-
-&#x20;   %% Silver Layer - Staging
-
-&#x20;   subgraph SILVER\_STG \[Silver Layer: Staging Views]
-
-&#x20;       stg\_O\[stg\_orders]:::silver
-
-&#x20;       stg\_C\[stg\_customers]:::silver
-
-&#x20;       stg\_M\[stg\_marketing]:::silver
-
-&#x20;   end
-
-
-
-&#x20;   %% Silver Layer - Intermediate
-
-&#x20;   subgraph SILVER\_INT \[Silver Layer: Intermediate Processing]
-
-&#x20;       int\_O\[int\_order\_details]:::silver
-
-&#x20;   end
-
-
-
-&#x20;   %% Gold Layer - Data Marts
-
-&#x20;   subgraph GOLD \[Gold Layer: Kimball Star Schema Data Marts]
-
-&#x20;       direction TB
-
-&#x20;       subgraph FINANCE\_MART \[Finance Mart]
-
-&#x20;           F1\[fct\_order\_financials]:::gold
-
-&#x20;           D1\[dim\_products]:::gold
-
-&#x20;       end
-
-&#x20;       subgraph MARKETING\_MART \[Marketing Mart]
-
-&#x20;           F2\[fct\_web\_sessions]:::gold
-
-&#x20;           D2\[dim\_web\_attributes]:::gold
-
-&#x20;       end
-
-&#x20;       subgraph CRM\_MART \[CRM Mart]
-
-&#x20;           F3\[fct\_customer\_retention]:::gold
-
-&#x20;           D3\[dim\_customers]:::gold
-
-&#x20;       end
-
-&#x20;   end
-
-
-
-&#x20;   %% Consumer Layer
-
-&#x20;   subgraph BI \[Reporting \& Consumption]
-
-&#x20;       Dash\[Power BI / Tableau Executive Dashboards]:::bi
-
-&#x20;   end
-
-
-
-    %% Data Pipeline Relationships
+    %% 1. Ingestion Links
     A --> stg_O
     B --> stg_C
     C --> stg_M
 
-    stg_O --> int_O
-    stg_C --> int_O
-    stg_M --> int_O
-
-    int_O --> F1
-    int_O --> F2
-    int_O --> F3
+    %% 2. Transformation Pipelines (Isolated Channels)
+    stg_O --> int_F
     
-    stg_C --> D3
-    stg_M --> D2
+    stg_M --> int_M
+    stg_O --> int_M
+    
+    stg_C --> int_R
+    stg_O --> int_R
 
+    %% 3. Materializing Facts
+    int_F --> F1
+    int_M --> F2
+    int_R --> F3
+
+    %% 4. Materializing Dimensions
+    stg_O --> D1
+    stg_M --> D2
+    stg_C --> D3
+
+    %% 5. Star Schema Relational Joins (The Kimball Keys)
+    D1 -.->|Product FK| F1
+    D3 -.->|Customer FK| F1
+    D2 -.->|Web Attr FK| F2
+    D3 -.->|Customer FK| F2
+    D3 -.->|Customer FK| F3
+
+    %% 6. Final Dashboard Outputs
     F1 --> Dash
     F2 --> Dash
     F3 --> Dash
-
-
 ```
+
+
 
 
 
