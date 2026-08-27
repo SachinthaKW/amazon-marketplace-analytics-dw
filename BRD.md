@@ -1,4 +1,4 @@
-\# Business Requirements Document (BRD) 📑
+# Business Requirements Document (BRD) 📑
 
 
 
@@ -10,31 +10,31 @@
 
 
 
-\---
+---
 
 
 
-\## 1. Executive Summary
+## 1. Executive Summary
 
 
 
-\### 1.1 Business Context
+### 1.1 Business Context
 
 The modern e-commerce landscape requires data-driven decision-making to survive fast-changing market conditions and complex consumer behaviors. Operating as an enterprise-scale Amazon merchant vendor generates massive volumes of operational data across fragmented channels. Currently, business units are operating in siloed data environments, causing reporting delays and inconsistent business metrics across corporate dashboards.
 
 
 
-\### 1.2 Project Objective
+### 1.2 Project Objective
 
 The objective of this project is to centralize, clean, and model 1 Million rows of multi-format operational seller data. By replacing manual reporting with an automated, hybrid Medallion-Kimball Data Warehouse, this platform will provide a single version of truth across corporate operations, marketing attribution, and customer retention metrics.
 
 
 
-\---
+---
 
 
 
-\## 2. Stakeholder Profiles \& Core Business Questions
+## 2. Stakeholder Profiles \& Core Business Questions
 
 
 
@@ -42,7 +42,7 @@ The platform must ingest raw operational streams to answer the core strategic qu
 
 
 
-\### 2.1 VP of Finance (Finance Mart)
+### 2.1 VP of Finance (Finance Mart)
 
 \*   \*\*Objective:\*\* Optimize operating profit margins and audit transactional health.
 
@@ -54,7 +54,7 @@ The platform must ingest raw operational streams to answer the core strategic qu
 
 
 
-\### 2.2 Director of Growth Marketing (Marketing Mart)
+### 2.2 Director of Growth Marketing (Marketing Mart)
 
 \*   \*\*Objective:\*\* Maximize marketing budget efficiency and trace consumer web behavior.
 
@@ -66,7 +66,7 @@ The platform must ingest raw operational streams to answer the core strategic qu
 
 
 
-\### 2.3 Head of Customer Success (CRM Mart)
+### 2.3 Head of Customer Success (CRM Mart)
 
 \*   \*\*Objective:\*\* Prevent churn and drive historical customer lifetime values.
 
@@ -78,11 +78,11 @@ The platform must ingest raw operational streams to answer the core strategic qu
 
 
 
-\---
+---
 
 
 
-\## 3. Data Scope \& System Constraints
+## 3. Data Scope \& System Constraints
 
 
 
@@ -102,15 +102,15 @@ The data warehouse is strictly bound by the boundaries of the upstream operation
 
 
 
-\---
+---
 
 
 
-\## 4. Functional Requirements
+## 4. Functional Requirements
 
 
 
-\### 4.1 Data Governance \& Security
+### 4.1 Data Governance & Security
 
 \*   \*\*PII Sanitization:\*\* Customer email fields must be normalized, and any blank values must be populated with a standardized `'Unknown'` string placeholder during initial staging ingestion.
 
@@ -118,7 +118,7 @@ The data warehouse is strictly bound by the boundaries of the upstream operation
 
 
 
-\### 4.2 Analytical Structural Rules (The Grain)
+### 4.2 Analytical Structural Rules (The Grain)
 
 \*   \*\*Atomic Financials Grain:\*\* The transaction engine must model financials at the lowest granular layer: \*\*One row per individual order line item\*\*. Pre-aggregating data before the final data mart presentation layer is prohibited.
 
@@ -126,11 +126,11 @@ The data warehouse is strictly bound by the boundaries of the upstream operation
 
 
 
-\---
+---
 
 
 
-\## 5. Non-Functional Requirements
+## 5. Non-Functional Requirements
 
 
 
